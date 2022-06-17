@@ -8,6 +8,7 @@ services:
       - "27017:27017"
     volumes:
       - ~/db:/data/db
+
   api:
     container_name: api
     image: dockerkeithics/op-api
@@ -23,6 +24,7 @@ services:
       - PROJECT_NAME="Service API"
       - TOKEN_SECRET=srdXq"ub6<~PDPH!g,D9B^z?H9NXTP)m
       - MONGO_DEBUG=true
+
   web:
     container_name: web
     image: dockerkeithics/op-web
@@ -32,6 +34,7 @@ services:
       - op
     environment:
       - REACT_APP_API=http://localhost:8081
+
 networks:
   op:
     driver: bridge
@@ -41,3 +44,6 @@ networks:
 volumes:
   dbdata:
   node_modules:
+
+## docker exec mongo sh -c 'mongodump --archive ' > ./dump_$(date '+%d-%m-%Y_%H-%M-%S').gz
+## find /opt/backup -type f -mtime +30 -delete
