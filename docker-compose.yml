@@ -1,0 +1,43 @@
+services:
+  mongo:
+    container_name: mongo
+    image: mongo:4.4.11
+    networks:
+      - op
+    ports:
+      - "27017:27017"
+    volumes:
+      - ~/db:/data/db
+  api:
+    container_name: api
+    image: dockerkeithics/op-api
+    ports:
+      - "8081:8081"
+    links:
+      - mongo
+    networks:
+      - op
+    environment:
+      - NODE_PORT=8081
+      - MONGO_URL=mongodb://mongo:27017/op
+      - PROJECT_NAME="Service API"
+      - TOKEN_SECRET=srdXq"ub6<~PDPH!g,D9B^z?H9NXTP)m
+      - MONGO_DEBUG=true
+  web:
+    container_name: web
+    image: dockerkeithics/op-web
+    ports:
+      - "4100:8080"
+    networks:
+      - op
+    environment:
+      - REACT_APP_API=http://localhost:8081
+networks:
+  op:
+    driver: bridge
+
+
+
+volumes:
+  dbdata:
+  node_modules:
